@@ -23,7 +23,7 @@ dice_roller <- function(faces, dice = 1, add = TRUE) {
     else if (dice != 1 & add == TRUE) {
       numbers_sum <- 0
       for (i in 1:dice) {
-        number_rolled <- round(runif(1, 1, faces))
+        number_rolled <- sample(1:faces, dice)
         numbers_sum <- numbers_sum + number_rolled
       }
       return(paste('Total of dice rolled: ', as.character(numbers_sum)))
@@ -31,7 +31,7 @@ dice_roller <- function(faces, dice = 1, add = TRUE) {
     else if (dice != 1 & add == FALSE) {
       numbers_rolled <- c()
       for (i in 1:dice) {
-        number_rolled <- round(runif(1, 1, faces))
+        number_rolled <- sample(1:faces, dice)
         numbers_rolled <- append(numbers_rolled, number_rolled)
       }
       roll_mean <- mean(numbers_rolled)
@@ -42,7 +42,7 @@ dice_roller <- function(faces, dice = 1, add = TRUE) {
                paste('Min of dice rolled: ', as.character(roll_min))))
     }
     else {
-      number_rolled <- round(runif(1, 1, faces))
+      number_rolled <- sample(1:faces, dice)
       return(paste('You rolled a ', as.character(number_rolled)))
     }
 }
