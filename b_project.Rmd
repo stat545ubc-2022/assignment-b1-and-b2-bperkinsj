@@ -1,0 +1,88 @@
+# Assignment B1
+
+Come close, brave soul, and gaze upon the object of your desire, hidden within this purple prose. It is as you seek - a function! One of extravagant power and decadent purpose! An oracle of the future, a tool with which fate itself can be altered! Falter in fear, tremble in trepidation, cower in cowardice! Behold!
+
+A dice roller!
+
+## The Function
+
+This function is a random number generator within a range determined by the user. There is no pre-determined set of ranges, but for flavor it is recommended that the user stick to the ranges found in dice used in tabletop role-playing games (d4, d6, d8, d10, d12, d20, and d100, representing a four-sided die, a six-sided die, an eight-sided die, and so on). The user has several options pertaining to the output. Please consult the roxygen tags below for those options.
+
+```{r}
+
+#'Dice Roller
+#' Mimics rolling a die or dice of the specified size (d6, d12, etc.). 
+#' @param faces The number of sides or faces of the die you wish to roll.
+#' @param dice The number of dice you wish to roll. The default is 1.
+#' @param add For rolls with more than one dice, whether you wish to add the dice together (TRUE) or get the mean, maximum, and minimum of the dice (FALSE). The default is TRUE.
+#' @return Either one number (the result of the die rolled or the result of the dice rolled then added together) or three numbers (the mean, maximum, and minimum of the dice rolled). 
+dice_roller <- function(faces, dice = 1, add = TRUE) {
+    if (faces <= 0 | dice <= 0) {
+      return('I\'m sorry, negative dice are not possible by mundane means. Please consult your nearest wizarding authority to resolve this issue.')
+    }
+    else if (dice != 1 & add == TRUE) {
+      numbers_sum <- 0
+      for (i in 1:dice) {
+        number_rolled <- round(runif(1, 1, faces))
+        numbers_sum <- numbers_sum + number_rolled
+      }
+      return(paste('Total of dice rolled: ', as.character(numbers_sum)))
+    }
+    else if (dice != 1 & add == FALSE) {
+      numbers_rolled <- c()
+      for (i in 1:dice) {
+        number_rolled <- round(runif(1, 1, faces))
+        numbers_rolled <- append(numbers_rolled, number_rolled)
+      }
+      roll_mean <- mean(numbers_rolled)
+      roll_max <- max(numbers_rolled)
+      roll_min <- min(numbers_rolled)
+      return(c(paste('Mean of dice rolled: ', as.character(roll_mean)), 
+               paste('Max of dice rolled: ', as.character(roll_max)),
+               paste('Min of dice rolled: ', as.character(roll_min))))
+    }
+    else {
+      number_rolled <- round(runif(1, 1, faces))
+      return(paste('You rolled a ', as.character(number_rolled)))
+    }
+}
+
+dice_roller(0, 3, FALSE)
+```
+
+## Examples
+Behind you, rushing down the hill, are kobolds with murder in their eyes and very sharp, possibly torturous, tools in their hands. Before you is a gaping chasm with only a spindly rope bridge spanning it. Below, water thunders through the rift. Roll me 1d20 to see how well you can carefully and deftly cross the bridge. 
+```{r}
+dice_roller(20)
+```
+
+Pretty good! Or terrible! But turns out it doesn't matter what you rolled, the bridge was going to collapse regardless, sending you plummeting into the rapids! And no, you can't reach out and grasp a nearby tree branch or rock ledge because you have no choice in this adventure. Choice is an illusion anyway.
+
+Let's roll damage!
+```{r}
+dice_roller(6, 4)
+```
+
+That's a lot of damage! But I forgot to mention, if you roll a 6 on one of these dice, the die explodes and you roll another d6! Let's see if you roll any sixes here.
+```{r}
+dice_roller(6, 4, FALSE)
+```
+You got lucky today. Or as lucky as you can be hurtling down rapids.
+
+What's that? This adventure is bull****? Hey, I didn't write it. Okay, I did, but what're you gonna do about it, huh? Just try to re-write reality, why don't you. Roll some negative dice.
+```{r}
+dice_roller(0)
+```
+See? I thought not.
+
+## Tests
+```{r}
+testthat::test_that('Basic testing', {
+  expect_lte(dice_roller(6), 6)
+  expect_gte(dice_roller(6), 1)
+  expect_lte(dice_roller(6, 2), 12)
+  expect_gte(dice_roller(6, 2), 1)
+  expect_length(dice_roller(6, 4, FALSE),)
+  expect_equal(dice_roller(0), 'I\'m sorry, negative dice are not possible by mundane means. Please consult your nearest wizarding authority to resolve this issue.')
+})
+```
