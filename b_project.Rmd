@@ -9,7 +9,6 @@ A dice roller!
 This function is a random number generator within a range determined by the user. There is no pre-determined set of ranges, but for flavor it is recommended that the user stick to the ranges found in dice used in tabletop role-playing games (d4, d6, d8, d10, d12, d20, and d100, representing a four-sided die, a six-sided die, an eight-sided die, and so on). The user has several options pertaining to the output. Please consult the roxygen tags below for those options.
 
 ```{r}
-
 #'Dice Roller
 #' Mimics rolling a die or dice of the specified size (d6, d12, etc.). 
 #' @param faces The number of sides or faces of the die you wish to roll.
@@ -23,31 +22,27 @@ dice_roller <- function(faces, dice = 1, add = TRUE) {
     else if (dice != 1 & add == TRUE) {
       numbers_sum <- 0
       for (i in 1:dice) {
-        number_rolled <- sample(1:faces, dice)
+        number_rolled <- round(runif(1, 1, faces))
         numbers_sum <- numbers_sum + number_rolled
       }
-      return(paste('Total of dice rolled: ', as.character(numbers_sum)))
+      return(numbers_sum)
     }
     else if (dice != 1 & add == FALSE) {
       numbers_rolled <- c()
       for (i in 1:dice) {
-        number_rolled <- sample(1:faces, dice)
+        number_rolled <- round(runif(1, 1, faces))
         numbers_rolled <- append(numbers_rolled, number_rolled)
       }
       roll_mean <- mean(numbers_rolled)
       roll_max <- max(numbers_rolled)
       roll_min <- min(numbers_rolled)
-      return(c(paste('Mean of dice rolled: ', as.character(roll_mean)), 
-               paste('Max of dice rolled: ', as.character(roll_max)),
-               paste('Min of dice rolled: ', as.character(roll_min))))
+      return(c(roll_mean, roll_max, roll_min))
     }
     else {
-      number_rolled <- sample(1:faces, dice)
-      return(paste('You rolled a ', as.character(number_rolled)))
+      number_rolled <- round(runif(1, 1, faces))
+      return(number_rolled)
     }
 }
-
-dice_roller(0, 3, FALSE)
 ```
 
 ## Examples
@@ -82,7 +77,7 @@ testthat::test_that('Basic testing', {
   expect_gte(dice_roller(6), 1)
   expect_lte(dice_roller(6, 2), 12)
   expect_gte(dice_roller(6, 2), 1)
-  expect_length(dice_roller(6, 4, FALSE),)
+  expect_length(dice_roller(6, 4, FALSE), 3)
   expect_equal(dice_roller(0), 'I\'m sorry, negative dice are not possible by mundane means. Please consult your nearest wizarding authority to resolve this issue.')
 })
 ```

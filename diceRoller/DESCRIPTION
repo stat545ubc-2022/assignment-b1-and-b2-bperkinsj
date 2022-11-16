@@ -1,0 +1,19 @@
+Package: diceRoller
+Title: Simulated dice roller
+Version: 0.1.0
+Authors@R: 
+    person("Brooks", "Perkins-Jechow", , "bperkinsj@gmail.com", role = c("aut", "cre"),
+           comment = c(ORCID = "YOUR-ORCID-ID"))
+Description: Simulates rolling a die or dice with a specified number of 
+  faces. Can provide either the result of one die roll, the result of 
+  adding several dice together, or the mean, maximum, and minimum (in that order)
+  of several dice.
+License: MIT + file LICENSE
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.2.1
+Suggests: 
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3
+Imports: 
+    stats
